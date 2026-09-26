@@ -1,0 +1,33 @@
+{
+  "name": "genpark-audio-packet-jitter-resilience-buffer-skill",
+  "version": "1.0.0",
+  "description": "Adaptive WebRTC audio packet jitter buffer and packet loss concealment (PLC) engine maintaining smooth voice playout over volatile network streams.",
+  "category": "Service",
+  "author": "AlphaPark",
+  "tags": [
+    "audio-buffer",
+    "jitter-buffer",
+    "webrtc",
+    "plc",
+    "realtime-audio",
+    "mcp"
+  ],
+  "tools": [
+    {
+      "name": "ingest_packet",
+      "description": "Ingest an incoming audio packet with sequence number, payload size, and arrival timestamp."
+    },
+    {
+      "name": "extract_playout_frame",
+      "description": "Extract the next sequential audio frame for playback with automatic PLC if missing."
+    },
+    {
+      "name": "get_jitter_telemetry",
+      "description": "Compute RFC 3550 inter-arrival jitter variance and buffer depth health."
+    },
+    {
+      "name": "run_benchmark_jitter_simulation",
+      "description": "Simulate out-of-order and dropped audio packets to verify resilience."
+    }
+  ]
+}
