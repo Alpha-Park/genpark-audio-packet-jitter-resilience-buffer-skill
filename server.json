@@ -12,7 +12,7 @@
     {
       "registryType": "mcpb",
       "identifier": "https://github.com/Alpha-Park/genpark-audio-packet-jitter-resilience-buffer-skill/releases/download/v1.0.1/genpark-jitter-buffer.mcpb",
-      "fileSha256": "fb8e7ee254241eafc24bf6920643085e7d14d1c7e4c33b6cdcc64c9c86cfb718",
+      "fileSha256": "32d68852b0eb13fb98ee1e0dc279f729893d9c2e7546ab2b51ea9401af58d79c",
       "transport": {
         "type": "stdio"
       }
