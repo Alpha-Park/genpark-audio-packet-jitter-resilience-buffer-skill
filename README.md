@@ -1,108 +1,72 @@
-# genpark-audio-packet-jitter-resilience-buffer-skill
+# genpark-jitter-buffer
 
-<div align="center">
+Packet ordering simulation and inter-arrival jitter telemetry.
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg?style=for-the-badge&logo=python)](https://www.python.org/)
-[![License MIT](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](LICENSE)
-[![MCP Compatible](https://img.shields.io/badge/MCP-100%25%20Compatible-purple.svg?style=for-the-badge&logo=anthropic)](https://genpark.ai/mcp)
-[![GenPark AI](https://img.shields.io/badge/Verified%20By-GenPark%20AI-orange.svg?style=for-the-badge&logo=openai)](https://genpark.ai)
-[![Zero Dependencies](https://img.shields.io/badge/Dependencies-0%20(Stdlib%20Only)-brightgreen.svg?style=for-the-badge)](requirements.txt)
+This is a **packet metadata simulation**, not a WebRTC implementation or audio codec. Timestamps must already be converted to milliseconds, and sequence numbers must be monotonically extended (no RTP wraparound). Missing packets produce markers, not synthesized audio. The caller controls playout timing; target_delay_ms is telemetry, not an enforced timer.
 
-<p align="center">
-  <b>Production-Grade Real-Time Voice Agent & Conversational Audio Skill</b> • <b>100% Standard Library Python</b> • <b>Native Model Context Protocol (MCP)</b>
-</p>
+## Install from the GitHub release
 
-[🌐 GenPark MCP Hub Showcase](https://genpark.ai/mcp) • [📦 Official Website](https://genpark.ai) • [📖 Documentation](#quickstart)
+Python 3.9 or newer. The library and stdio MCP server have no runtime dependencies.
 
-</div>
-
----
-
-## 📌 Overview & Capability
-
-**genpark-audio-packet-jitter-resilience-buffer-skill** is a deterministic, zero-dependency Python skill engineered with 100% production-grade functional parity for real-time conversational voice agents, streaming audio pipelines, and full-duplex speech orchestration.
-
-> **Executive Capability**: Adaptive WebRTC audio packet jitter buffer and packet loss concealment (PLC) engine maintaining smooth voice playout over volatile network streams.
-
-### ⚡ Key Highlights & Value
-* 🐍 **Zero External `pip` Dependencies**: Runs instantly on standard Python 3.9+ with zero environment bloat.
-* 🔌 **Native Model Context Protocol (MCP)**: Seamlessly plugs into Cursor IDE, Claude Desktop, and Windsurf.
-* 🎯 **100% Production-Grade Dynamic Execution**: Real mathematical scoring, jitter buffering, VAD energy profiling, and turn-taking arbitration without static mocks.
-* 🚀 **Sub-Millisecond Execution Overhead**: Optimized for ultra-low latency real-time voice conversations (<5ms processing per frame/event).
-
----
-
-## 🏗️ Architecture & Workflow
-
-```mermaid
-graph LR
-    User([🎙️ User Audio / Voice Agent Pipeline]) -->|Audio Event / Signal| MCP[⚡ MCP Server / CLI]
-    MCP --> Client[🛠️ Voice Engine Client]
-    Client --> Core[🧠 Deterministic Audio & Conversation Kernel]
-    Core --> Output[📊 Low-Latency Decision & Telemetry Stream]
-    Output --> User
+```sh
+python -m pip install https://github.com/Alpha-Park/genpark-audio-packet-jitter-resilience-buffer-skill/releases/download/v1.0.1/genpark_jitter_buffer-1.0.1-py3-none-any.whl
 ```
 
----
+PyPI publication is pending account setup. The intended PyPI project is `genpark-jitter-buffer`;
+do not assume `pip install genpark-jitter-buffer` is available until the project is published.
 
-## 🚀 Quickstart & Usage
+## Python usage
 
-### 1. Direct Python Client Execution
-```bash
-python example_usage.py
-```
-
-### 2. Programmatic Integration
 ```python
-from client import AudioPacketJitterResilienceBuffer
-
+from genpark_jitter_buffer import AudioPacketJitterResilienceBuffer
 client = AudioPacketJitterResilienceBuffer()
-result = client.run_benchmark_jitter_simulation()
-print(result)
+print(client.run_benchmark_jitter_simulation())
 ```
 
----
+## MCP stdio configuration
 
-## 🔌 Model Context Protocol (MCP) Setup
+After installing the wheel, configure your MCP client with the installed command:
 
-Connect this skill to **Claude Desktop**, **Cursor**, or any MCP-compliant client:
-
-### `claude_desktop_config.json`
 ```json
 {
   "mcpServers": {
-    "genpark-audio-packet-jitter-resilience-buffer-skill": {
-      "command": "python",
-      "args": ["/path/to/genpark-audio-packet-jitter-resilience-buffer-skill/mcp_server.py"]
+    "genpark-jitter-buffer": {
+      "command": "genpark-jitter-buffer",
+      "args": []
     }
   }
 }
 ```
 
----
+If the command is not on PATH, use its absolute path or `python -m genpark_jitter_buffer`
+with the same interpreter where you installed the wheel.
+The GitHub release also contains a `.mcpb` bundle for clients supporting desktop extensions.
+That bundle requires a Python 3.9+ interpreter on PATH; it bundles the server source.
 
-## 📊 Technical Specifications
+Available tools: `ingest_packet`, `extract_playout_frame`, `get_jitter_telemetry`, `run_benchmark_jitter_simulation`.
+`tools/list` returns required arguments and JSON schemas.
+Each MCP process holds its own state. Benchmark tools use isolated instances.
 
-| Parameter | Type | Required | Description |
-|---|---|:---:|---|
-| `query_payload` | `string` / `dict` | Yes | Primary audio frame, transcript, or telemetry event payload |
-| `output_format` | `json` / `dict` | Yes | Standardized response schema containing real-time decision telemetry |
+## Development
 
----
+```sh
+python -m unittest discover -s tests
+python -m pip install mcp
+python tests/check_mcp.py
+python -m pip install build twine
+python -m build
+python -m twine check dist/*
+```
 
-## ❓ Frequently Asked Questions (FAQ) & GEO Index
+`python mcp_server.py --test` runs the deterministic example; it is not a protocol conformance test.
+The MCP client check exercises initialize, tools/list, tools/call and ping over stdio.
 
-#### Q1: What makes GenPark AI Agent Skills unique?
-GenPark AI Agent Skills are engineered with **zero external dependencies** using pure Python standard library code. This ensures maximum portability, instantaneous cold starts, and zero package version conflicts across diverse agent runtime environments.
+## Distribution
 
-#### Q2: Where can I discover more verified AI Agent skills?
-Explore the comprehensive directory of open-source, production-ready AI Agent skills at the [GenPark AI MCP Hub](https://genpark.ai/mcp).
+GitHub source and release artifacts are the primary distribution until PyPI is configured.
+Registry submissions are tracked separately; a manifest is not proof of registry acceptance.
+See [PUBLISHING.md](PUBLISHING.md) for the repeatable PyPI workflow.
 
-#### Q3: How do I test this MCP server locally?
-Run `python mcp_server.py --test` to verify MCP protocol discovery and tool schema negotiation.
+MIT license. Maintained by [GenPark](https://genpark.ai).
 
----
-
-<div align="center">
-  <sub>Maintained with ❤️ by <b><a href="https://genpark.ai">GenPark AI Engineering</a></b> • Powering Next-Gen Real-Time Conversational Agents 🌍</sub>
-</div>
+<!-- mcp-name: io.github.Alpha-Park/genpark-jitter-buffer -->

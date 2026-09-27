@@ -1,7 +1,7 @@
 {
   "name": "genpark-audio-packet-jitter-resilience-buffer-skill",
-  "version": "1.0.0",
-  "description": "Adaptive WebRTC audio packet jitter buffer and packet loss concealment (PLC) engine maintaining smooth voice playout over volatile network streams.",
+  "version": "1.0.1",
+  "description": "Packet ordering simulation and inter-arrival jitter telemetry.",
   "category": "Service",
   "author": "AlphaPark",
   "tags": [
