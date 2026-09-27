@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genpark-audio-jitter-buffer"
+version = "1.0.0"
+description = "Adaptive WebRTC audio packet jitter buffer and packet loss concealment (PLC) engine."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+  { name = "GenPark AI Engineering", email = "engineering@genpark.ai" }
+]
+keywords = ["ai-agent", "mcp", "model-context-protocol", "zero-dependency", "python"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+dependencies = []
+
+[project.urls]
+"Homepage" = "https://genpark.ai/mcp"
+"Repository" = "https://github.com/Alpha-Park/genpark-audio-packet-jitter-resilience-buffer-skill"
+"Documentation" = "https://github.com/Alpha-Park/genpark-audio-packet-jitter-resilience-buffer-skill#readme"
+"Bug Tracker" = "https://github.com/Alpha-Park/genpark-audio-packet-jitter-resilience-buffer-skill/issues"
+
+[project.scripts]
+genpark-audio-jitter-buffer = "client:main"
